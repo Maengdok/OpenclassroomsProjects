@@ -1,0 +1,40 @@
+sudo -s -u postgres
+createuser <name>
+createdb -O <username> <dbname>
+psql <dbname>
+
+----
+
+nano settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql', # On utilise l'adaptateur postgresql
+        'NAME': 'disquaire', # Le nom de notre base de données créées précédemment
+        'USER': 'maengdok',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '5432',
+    }
+}
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'debug_toolbar',
+]
+
+----
+
+
+virtualenv -p python3 env
+source env/Scripts/activate
+
+sudo chmod -x manage.py
+
+python3 manage.py migrate
+python3 manage.py runserver
+
