@@ -1,0 +1,54 @@
+Nouvel environnement
+	python3.8 -m venv <name>
+Activation
+	env\Scripts\activate.bat
+Désactiver
+	env\Scripts\deactivate.bat
+Supprimer un environnement
+	rm -rf <name>
+Créer un .gitignore
+	env/
+Fichier des dépendances
+	Windows pip list > requirements.txt
+	Linux pip freeze > requirements.txt
+
+	Recommandé: les ajouter à la main
+Installer les dépendances
+	pip install -r requirements.txt
+Python debugger
+	if __name__ == '__main__':
+    	args = parse_arguments()
+	    import pdb; pdb.set_trace() <--- PENSER A RETIRER LORSQUE LE DEBUG EST TERMINE
+	    if args.extension == 'xml':
+	        x_an.launch_analysis(args.datafile)
+	    elif args.extension == 'csv':
+	        c_an.launch_analysis(args.datafile)
+Gestion d'erreur
+	try:
+ 	   print('Je suis une instruction problématique')
+	except Exception as e:
+	    print('Je suis déclenchée quand Exception est levée')
+	except:
+	    print('Une autre erreur est survenue')
+	else:
+	    print("Tout s'est bien passé ! Je passe donc à la suite")
+	finally:
+	    print("Je suis déterminé : erreur ou pas, je m'affiche dans tous les cas")
+log
+	import logging as lg
+
+	try:
+		<instructions>
+	except Warning as e:
+		lg.warning(e)
+
+	5 niveaux de log à choisir:
+		DEBUG : Informations détaillées dans le but d'en savoir plus sur l'exécution d'une instruction.
+
+		INFO : Information sur le déroulement d'un programme.
+
+		WARNING : Quelque chose d'inattendu s'est produit mais le programme continue de fonctionner.
+
+		ERROR : A cause d'un problème important, le programme n'a pu réaliser une tâche.
+
+		CRITICAL : Problème très sérieux qui a pu causer l'arrêt du programme.
