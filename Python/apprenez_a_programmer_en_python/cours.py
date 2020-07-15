@@ -2,7 +2,10 @@
 #-*-coding:Utf-8 #Sélection de l'encodage pour les accents
 
 
-# Fichier à titre d'information. Utilisé uniquement pour répertorier les leçons
+"""
+    Fichier à titre d'information. Utilisé uniquement pour répertorier les leçons
+    "Apprenez à programmer en Python" du site OpenclassRooms
+"""
 
 
 # Creation de fonction
@@ -43,7 +46,7 @@ help("math.sqrt")
 # Importation d'une fonction unique d'un module
 
 from math import fabs
-from math import * # Fera un check up de toutes les fonctions 
+from math import * # Fera un check up de toutes les fonctions
 
 # Appel de la fonction unique d'un module
 
@@ -129,7 +132,7 @@ try:
     # Test
     except type_de_l_exception:
         pass # Rien ne doit se passer en cas d'erreur
-    
+
 # Assertion
 
 """ Test de condition avec assert """
@@ -152,7 +155,7 @@ except ValueError:
     print("La valeur saisie est invalide (l'année est peut-être négative).")
 
 
-while input() != "Q":    
+while input() != "Q":
     input("Appuyez sur \" Q \" pour fermer ce programme...")
 # Afin de mettre fin au programme
 
@@ -769,7 +772,7 @@ with open("donnees", "rb") as fichier: # "rb" : Read + Binary
 # AUTRE
 
 ma_liste1 = [1, 2, 3]
-ma_liste2 = ma_liste1 
+ma_liste2 = ma_liste1
 ma_liste2.append(4)
 print(ma_liste2)
 > [1, 2, 3, 4]
@@ -802,3 +805,220 @@ inc_i()
 print(i)
 > 5
 
+# CLASSE
+
+# Définition de classe et constructeur
+
+class Personne: # Définition de la classe Personne
+"""
+ Classe définissant une personne caractérisée par :
+  - Son nom
+  - Son prénom
+  - Son âge
+  - Son lieu de résidence
+"""
+
+    def __init__(self, nom, prenom): # Methode constructeur
+        self.nom = nom # Attribut nom
+        self.prenom = prenom
+        self.age = 28
+        self.lieu_residence = "Val d'Oise"
+
+axel = Personne("Pion", "Axel")
+print(axel.nom)
+> 'Pion'
+
+# Attributs de classe
+
+class Compteur:
+
+    objets_crees = 0
+    def __init__(self):
+        """ A chaque qu'un objet est créé, le compteur incrémente """
+        Compteur.objets_crees += 1
+
+print(Compteur.objets_crees)
+> 0
+a = Compteur() # Création d'un premier objet
+print(Compteur.objets_crees)
+> 1
+b = Compteur() # Création d'un second objet
+print(Compteur.objets_crees)
+> 2
+
+# Les méthodes
+
+class TableauNoir:
+    """
+        Classe définissant une surface sur laquelle on peut écrire,
+        que l'on peut lire et effacer, par jeu de méthodes.
+        L'attribut modifié est 'surface'
+    """
+
+    def __init__(self):
+        """
+            Par défaut, notre surface est vide
+        """
+        self.surface = ""
+
+    def ecrire(self, message_a_ecrire):
+        """
+            Méthode permettant d'écrire sur la surface du tableau.
+            Si la surface n'est pas vide, on saute une ligne avant de rajouter
+            le message à écrire
+        """
+
+        if self.surface != "":
+            self.surface += "\n"
+        self.surface += message_a_ecrire
+
+    def lire(self):
+        """
+            Cette méthode se charge d'afficher, grâce à print,
+            la surface du tableau
+        """
+
+        print(self.surface)
+
+    def effacer(self):
+        """
+            Cette méthode permet d'efface la surface du tableau
+        """
+
+        if self.surface != "":
+            self.surface= ""
+        else:
+            print("Le tableau est déjà propre")
+
+tab = TableauNoir()
+print(tab.surface)
+> ''
+tab.ecrire("Cool! Ce sont les vacances!")
+print(tab.surface)
+> "Cool! Ce sont les vacances!")
+tab.ecrire("Joyeux Noël!")
+print(tab.ecrire)
+> "Cool! Ce sont les vacances!"
+> "Joyeux Noël!"
+
+# Paramêtre self
+
+    """
+        L'attribut self permet de travailler dans une méthode de l'objet ou sur
+        l'objet lui-même
+    """
+
+# Exemple
+
+>>> tab.ecrire
+> <bound method TableauNoir.ecrire of <__main__.TableauNoir object at 0x00B3F3F0>>
+>>> TableauNoir.ecrire
+> <function ecrire at 0x00BA5810>
+>>> help(TableauNoir.ecrire)
+> Help on function ecrire in module __main__:
+ecrire(self, message_a_ecrire):
+    """
+        Méthode permettant d'écrire sur la surface du tableau.
+        Si la surface n'est pas vide, on saute une ligne avant de rajouter
+        le message à écrire
+    """
+>>> TableauNoir.ecrire(tab, "essai")
+>>> tab.surface
+> 'essai'
+
+# Méthodes de classe et méthode statiques
+
+# Méthode de classe
+
+class Compteur:
+    """
+        Cette classe possède un atrribut de classe qui s'incrémente à chaque
+        fois que l'on crée un objet de ce type
+    """
+
+    objets_crees = 0
+    def __init__(self):
+        """
+            A chaque qu'un objet est créé, le compteur incrémente
+        """
+        Compteur.objets_crees += 1
+
+    def combien(cls):
+        """
+            Méthode de classe affichant combien d'objets ont été créés
+        """
+        print("Jusqu'à présent, {} objets on été créés.".format(cls.objets_crees))
+    combien = classmmethod(combien)
+
+>>> Compteur.combien()
+> "Jusqu'à présent, 0 objets ont été créés."
+>>> a  = Compteur()
+>>> a.combien()
+> "Jusqu'à présent, 1 objets ont été créés."
+
+# Méthode statique
+
+class TestStaticMethod:
+    """
+        Une classe de test tout simplement
+    """
+
+    def afficher():
+        """
+            Fonction chargée d'afficher quelque chose
+        """
+        print("On affiche la même chose.")
+        print("peu importe les données de l'objet ou de la classe")
+    afficher = staticmethod(afficher)
+
+# INTROSPECTION
+
+# Fonction dir
+
+"""
+    La fonction dir renvoie une liste comprenant le nom des attributs et
+    méthodes de l'objet qu'on lui passe en parametre.
+"""
+
+class Test:
+    """
+        Une classe de test tout simplement
+    """
+    def __init__(self):
+        """
+            On définit dans le constructeur un unique attribut
+        """
+        self.mon_attribut = "ok"
+
+    def afficher_attribut(self):
+        """
+            Méthode affichant l'attribut 'mon_attribut'
+        """
+        print("Mon attribut est {}.".format(self.mon_attribut))
+
+>>> un_test = Test() # Création d'un objet de la classe Test
+>>> un_test.afficher_attribut()
+"Mon attribut est ok"
+>>> dir(un_test)
+['__class__', '__delatrr__', '__dict__', '__doc__', '__eq__', '__format__',
+'__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__',
+'__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__',
+'__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__',
+'afficher_attribut', 'mon_attribut']
+
+# L'attribut spécial __dict__
+
+"""
+    Par défaut, tous les objets construits depuis une classe posséderont un
+    attribut spécial __dict__.
+    C'est un dictionnaire que contient en guise de clefs les noms des attributs
+    et, en tant que valeurs, les valeurs des attributs
+"""
+
+>>> un_test = Test()
+>>> un_test.__dict__
+> {'mon_attribut': 'ok'}
+
+>>> un_test.__dict__["mon_attribut"] = "plus ok"
+>>> un_test.afficher_attribut()
+> "Mon attribut est plus ok"
