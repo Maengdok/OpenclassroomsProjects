@@ -1000,7 +1000,7 @@ class Test:
 >>> un_test.afficher_attribut()
 "Mon attribut est ok"
 >>> dir(un_test)
-['__class__', '__delatrr__', '__dict__', '__doc__', '__eq__', '__format__',
+['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__',
 '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__',
 '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__',
 '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__',
@@ -1022,3 +1022,419 @@ class Test:
 >>> un_test.__dict__["mon_attribut"] = "plus ok"
 >>> un_test.afficher_attribut()
 > "Mon attribut est plus ok"
+
+
+# Définir des propriétés
+
+    """
+        Les propriétés permettent de contrôler l'accès à certains attributs d'une instance
+
+        nom_propriete = property(methode_accesseur, methode_mutateur, methode_suppression, methode_aide)
+
+        Chaque paramêtre est optionnel
+
+        On y accède simplement grâce à objet.nom_propriete comme pour n'importe quel autre attribut
+
+    """
+
+# ENCAPSULATION
+
+class Personne: # Définition de la classe Personne
+    """
+     Classe définissant une personne caractérisée par :
+      - Son nom
+      - Son prénom
+      - Son âge
+      - Son lieu de résidence
+  """
+
+    def __init__(self, nom, prenom): # Methode constructeur
+        """
+            Constructeur de notre classe
+        """
+        self.nom = nom # Attribut nom
+        self.prenom = prenom
+        self.age = 28
+        self.lieu_residence = "Val d'Oise"
+
+    def _get_lieu_residence(self): # Accesseur
+        """
+            Méthode qui sera appelée quand on souhaitera accéder en lecture
+            à l'attribut 'lieu_residence'
+        """
+
+        print("On accède à l'attribut lieu_residence!")
+        return self._lieu_residence # _ devant l'attribut est une convention pour dire
+        # que l'on accède pas à cet attribut via l'extérieur de la classe
+
+    def _set_lieu_residence(self, nouvelle_residence): # Mutateur
+        """
+            Méthode appelée quand on souhaite modifier le lieu de résidence
+        """
+
+        print("Attention, il semble que {} déménage à {}."format(self.prenom,
+                nouvelle_residence))
+        self._lieu_residence = nouvelle_residence
+    # On va dire à Python que notre attribut lieu_residence pointe vers une propriété
+    lieu_residence = property(_get_lieu_residence, _set_lieu_residence)
+
+>>> axel = Personne("Pion", "Axel")
+>>> axel.nom
+> 'Pion'
+>>> axel.prenom
+> 'Axel'
+>>> axel.lieu_residence
+> "On accède à l'attribut lieu_residence !"
+> 'Paris'
+>>> axel.lieu_residence = "Séoul"
+> "Attention, il semble que Axel déménage à Séoul."
+>>> axel.lieu_residence
+> 'Séoul'
+
+# METHODES SPECIALES
+
+# Constructeurs
+
+# Edition de l'objet
+
+class Exemple:
+    """
+        Un petit exemple de classe
+    """
+
+    def __init__(self, nom):
+        """
+            Exemple de constructeur
+        """
+        self.nom = nom
+        self.autre_attribut = "valeur"
+
+>>> mon_objet = Exemple("un premier exemple")
+
+# Suppression de l'objet
+    # Pas très utile ...
+
+def __del__(self):
+    """
+        Méthode appelée quand l'objet est supprimé
+    """
+    print("C'est la fin! On me supprime!")
+
+# Représentation de l'objet. Méthode __repr__
+
+class Personne: # Définition de la classe Personne
+    """
+     Classe définissant une personne caractérisée par :
+      - Son nom
+      - Son prénom
+      - Son âge
+      - Son lieu de résidence
+  """
+
+    def __init__(self, nom, prenom): # Methode constructeur
+        """
+            Constructeur de notre classe
+        """
+        self.nom = nom # Attribut nom
+        self.prenom = prenom
+        self.age = 28
+        self.lieu_residence = "Val d'Oise"
+
+    def __repr__(self):
+        """
+            Quand on entre notre objet dans l'interpréteur
+        """
+        return "Personne: nom({}), prenom({}), âge({})".format(
+                self.nom, self.prenom, self.age)
+
+>>> p1 = Personne("Pion", "Axel")
+>>> p1
+> 'Personne: nom(Pion), prénom(Axel), âge(28)'
+
+# Ou
+
+>>> p1 = Personne("Pion", "Axel")
+>>> repr(p1)
+> 'Personne: nom(Pion), prénom(Axel), âge(28)'
+
+# Méthode __str__
+
+    def __str__(self):
+        """
+            Méthode permettant d'afficher plus joliment notre objet
+        """
+        return "{} {}, âgé de {} ans".format(self.prenom, self.nom, self.age)
+
+>>> p1 = Personne("Pion", "Axel")
+>>> print(p1)
+> 'Axel Pion, âgé de 28 ans'
+>>> chaine = str(p1)
+>>> chaine
+> 'Axel Pion, âgé de 28 ans'
+
+# Méthode __getattr__
+
+class Protege:
+    """
+        Classe possédant une méthode particulière d'accès à ses attributs:
+        Si l'attribut n'est pas trouvé, on affiche une arlerte et renvoie None
+    """
+
+    def __init__(self):
+        """
+            On crée quelques attributs par défaut
+        """
+        self.a = 1
+        self.b = 2
+        self.c = 3
+
+    def __getattr__(self, nom):
+        """
+            Si Python ne trouve pas l'attribut nommé nom, il appelle
+            cette méthode. On affiche une alerte
+        """
+
+        print("Alerte! Il n'y a pas d'attribut {} ici !".format(nom))
+
+>>> pro = Protege()
+>>> pro.a
+> 1
+>>> pro.c
+> 3
+>>> pro.e
+> 'Alerte! Il n'y pas d'attribut e ici !'
+
+# Méthode __setattr__
+
+def __setattr__(self, nom_attr, val_attr):
+    """
+        Méthode appelée quand on fait objet.nom_attr = val_attr.
+        On se charge d'enregistrer l'objet
+    """
+
+    object.__setattr__(self, nom_attr, val_attr)
+    self.enregistrer()
+
+# Méthode __delattr__
+
+"""
+    Méthode appelée quand on souhaite supprimer un attribut de l'objet en faisant
+    del objet.attribut
+    ou
+    object.__delattr__
+"""
+
+def __delattr__(self, nom_attr):
+    """
+        On ne peut supprimer d'attribut, on lève l'exception
+        AttributeError
+    """
+
+    raise AttributeError("Vous ne pouvez supprimer aucun attribut de cette classe")
+
+# Bonus
+
+objet = MaClasse()
+getattr(objet, "nom") # Semblable à objet.nom
+setattr(objet, "nom", val) # = objet.nom = val ou objet.__setattr__("nom", val)
+delattr(objet, "nom") # = del objet.nom ou objet.__delattr__("nom")
+hasattr(objet, "nom") # Renvoie True si l'attribut "nom" existe, False sinon
+
+# Les méthodes de conteneur
+
+# Accès aux éléments d'un conteneur
+
+class ZDict:
+    """
+        Classe enveloppe d'un dictionnaire
+    """
+
+    def __init__(self):
+        """
+            Notre classe n'accepte aucun paramêtre
+        """
+        self.dictionnaire = {}
+
+    def __getitem__(self, index): # objet[index]
+        """
+            Cette méthode spéciale est appelée quand on fait objet[index]
+            Elle redirige vers self._dictionnaire[index]
+        """
+
+        return self._dictionnaire[index]
+
+    def __setitem__(self, index, valeur): # objet[index] = valeur
+        """
+            Cette méthode est appelée quand on écrit objet[index] = valeur
+            On redirige vers self._dictionnaire[index] = valeur
+        """
+
+        self._dictionnaire[index] = valeur
+
+# Méthodes mathématiques
+
+class Duree:
+    """
+        Classe contenant des durées sous la forme d'un nombre de minutes
+        et de secondes
+    """
+
+    def __init__(self, min=0, sec=0):
+        """
+            Constructeur de la classe
+        """
+        self.min = min # Nombre de minutes
+        self.sec = sec # Nombre de secondes
+
+    def __str__(self):
+        """
+            Affichage un peu plu joli de nos objets
+        """
+
+        return "{0:02}:{1:02}".format(self.min, self.sec) # {0:02} > 0: = premier argument
+                                                            # :02 = nombre de 0 a afficher
+
+>>> d1 = Duree(3, 5)
+>>> print(d1)
+> '03:05'
+
+
+    def __add__(self, objet_a_ajouter):
+        """
+            L'objet à ajouter est un entier, le nombre de secondes
+        """
+        nouvelle_duree = Duree()
+        # On va copier self dans l'objet créé pour avoir la même durée
+        nouvelle_duree.min = self.min
+        nouvelle_duree.sec = self.sec
+        # On ajoute la durée
+        nouvelle_duree.sec += objet_a_ajouter
+        # Si le nombre de secondes >= 60
+        if nouvelle_duree.sec >= 60:
+            nouvelle_duree.min += nouvelle_duree.sec // 60
+            nouvelle_duree.sec = nouvelle_duree.sec % 60
+        # On renvoie la nouvelle durée
+        return nouvelle_duree
+
+>>> d1 = Duree(12, 8)
+>>> print(d1)
+> '12:08'
+>>> d2 = d1 + 54 # d1 + 54 secondes
+# Ou
+>>> d2 = d1.__add__(54)
+>>> print(d2)
+> '13:02'
+
+# Bonus
+
+    """
+        __sub__
+        __mul__
+        __truediv__
+        __floordiv__
+        __mod__
+        __pow__
+        ... Voir man Python
+    """
+
+# Reverse add. Méthode __radd__
+
+def __radd__(self, objet_a_ajouter):
+    """
+        Cette méthode est appelée si on écrit 4 + objet et que le premier objet
+        (4 dans cet exemple) ne sait pas comment ajouter le seconde.
+        On se contente de rediriger sur __add__ puisque, ici, cela revient
+        au même: l'opération doit avoir le même résultat, posée dans un sens
+        ou dans l'autre
+    """
+
+        return self + objet_a_ajouter
+
+>>> d2 = 4 + d1
+
+# Surcharge des opérateurs += et -= avec __iadd__
+
+def __iadd__(self, objet_a_ajouter):
+    """
+        L'objet à ajouter est un entier, le nombre de secondes
+    """
+    # On travaille directement sur self cette fois
+    # On ajoute la durée
+    self.sec += objet_a_ajouter
+    # Si le nombre de secondes >= 60
+    if self.sec >= 60:
+        self.min += self.sec // 60
+        self.sec = self.sec % 60
+    # On renvoie self
+    return self
+
+>>> d1 = Duree(8, 5)
+>>> d1 += 128
+>>> print(d1)
+> '10:13'
+
+"""
+    == : def __eq__(self, objet_a_comparer):
+    Renvoie True si self et objet_a_comparer son égaux
+
+    != : def __ne__(self, objet_a_comparer):
+    Renvoie True si self et objet_a_comparer sont différents
+
+    > : def __gt__(self, objet_a_comparer):
+
+    >= : def __ge__(self, objet_a_comparer):
+
+    < : def __lt__(self, objet_a_comparer):
+
+    <= : def __le__(self, objet_a_comparer):
+"""
+
+def __eq__(self, autre_duree):
+    """
+        Test si self et autre_duree sont égales
+    """
+
+    return self.sec == autre_duree.sec and self.min == autre_duree.min # True ou False
+
+def __gt__(self, autre_duree):
+    """
+        Test si self > autre_duree
+    """
+    nb_sec1 = self.sec + self.min * 60
+    nb_sec2 = autre_duree.sec + autre_duree.min * 60
+    return nb_sec1 > nb_sec2 # True ou False
+
+# Méthodes spéciales utiles à Pickle
+
+# Méthode __getstate__
+
+class Temp:
+    """
+        Classe contenant plusieurs attributs, dont un temporaire
+    """
+
+    def __init__(self):
+        """
+            Constructeur de notre objet
+        """
+        self.attribut_1 = "une valeur"
+        self.attribut_2 = "une autre valeur"
+        self.attribut_temporaire = 5
+
+    def __getstate__(self):
+        """
+            Renvoie le dictionnaire d'attributs à sérialiser
+        """
+        dict_attr = dict(self.__dict__)
+        dict_attr["attribut_temporaire"] = 0
+        return dict_attr
+        # Pickle enregistrera le dictionnaire modifié, dict_attr
+
+# Unpickler.load()
+
+    def __setstate__(self, dict_attr):
+        """
+            Méthode appelée lors de la désérialisation de l'objet
+        """
+        dict_attr["attribut_temporaire"] = 0
+        self.__dict__ = dict_attr
