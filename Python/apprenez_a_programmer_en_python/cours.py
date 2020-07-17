@@ -1438,3 +1438,447 @@ class Temp:
         """
         dict_attr["attribut_temporaire"] = 0
         self.__dict__ = dict_attr
+
+# Méthodes de tri
+
+    """
+        Deux méthodes de tri
+
+        - liste.sort()
+        - sorted(liste)
+    """
+
+# Tri avec des clefs précises
+
+etudiants = [
+    """
+        Nom, âge, moyenne
+    """
+    ("Clément", 14, 16),
+    ("Charles", 12, 15),
+    ("Orianne", 14, 18),
+    ("Thomas", 11, 12),
+    ("Damien", 12, 15),
+]
+
+>>> sorted(etudiants) # Va trier en se basant sur la première colonne: les noms
+
+"""
+    sorted et sort ont tous deux un paramêtre optionnel qui attend une fonction
+"""
+
+>>> doubler = lambda x: x * 2
+>>> doubler
+> '<funtion <lambda> at 0x00000000029AD1E0>'
+>>> doubler(8)
+> 16
+
+# Utilisation de la fonction lambda pour le tri
+
+lambda colonnes: colonnes[2]
+
+>>> sorted(etudiants, key=lambda colonnes: colonnes[2])
+# Va trier en fonction des moyennes
+
+# Trier une liste d'objets
+
+class Etudiant:
+
+    """
+        Classe représentant un étudiant.
+
+        On représente un étudiant par son prénom (attribut prenom), son âge
+        (attribut age) et sa note moyenne (attribut moyenne, entre 0 et 20)
+
+        paramètres du constructeur:
+            prenom -- le prénom de l'étudiant
+            age -- l'âge de l'étudiant
+            moyenne -- la moyenne de l'étudiant
+    """
+
+    def __init__(self, prenom, age, moyenne):
+        self.prenom = prenom
+        self.age = age
+        self.moyenne = moyenne
+
+    def __repr__(self):
+        return "<Etudiant {} (âge={}, moyenne={})>".format(
+                self.prenom, self.age, self.moyenne)
+
+etudiants = [
+    """
+        Nom, âge, moyenne
+    """
+    Etudiant("Clément", 14, 16),
+    Etudiant("Charles", 12, 15),
+    Etudiant("Orianne", 14, 18),
+    Etudiant("Thomas", 11, 12),
+    Etudiant("Damien", 12, 15),
+]
+
+>>> sorted(etudiants)
+> """Traceback (most recent call last):
+        File "<stdin>", line1, in <module>
+    TypeError: unorderable types: Etudiant() < Etudiant()"""
+
+>>> sorted(etudiants, key=lambda etudiant: etudiant.moyenne)
+> """
+    <Etudiant Thomas (âge=11, moyenne=12)>,
+    <Etudiant Charles (âge=12, moyenne=15)>,
+    <Etudiant Damien (âge=12, moyenne=15)>,
+    <Etudiant Clément (âge=14, moyenne=16)>,
+    <Etudiant Orianne (âge=14, moyenne=18)>,
+"""
+
+>>> sorted(etudiants, key=lambda etudiant: etudiant.age, reverse=True)
+> """
+    <Etudiant Clément (âge=14, moyenne=16)>,
+    <Etudiant Orianne (âge=14, moyenne=18)>,
+    <Etudiant Charles (âge=12, moyenne=15)>,
+    <Etudiant Damien (âge=12, moyenne=15)>,
+    <Etudiant Thomas (âge=11, moyenne=12)>,
+"""
+
+# Tri avec les fonctions du module operator
+
+# itemgetter
+
+from operator import itemgetter
+
+sorted (etudiants, key=itemgetter(2))
+# Même résultat que pour sorted(etudiants, key=lambda etudiant: etudiant.moyenne)
+# Mais plus rapide que ce dernier sur des listes plus grandes
+
+# Trier une liste d'objets avec attrgetter
+class Etudiant:
+
+    """
+        Classe représentant un étudiant.
+
+        On représente un étudiant par son prénom (attribut prenom), son âge
+        (attribut age) et sa note moyenne (attribut moyenne, entre 0 et 20)
+
+        paramètres du constructeur:
+            prenom -- le prénom de l'étudiant
+            age -- l'âge de l'étudiant
+            moyenne -- la moyenne de l'étudiant
+    """
+
+    def __init__(self, prenom, age, moyenne):
+        self.prenom = prenom
+        self.age = age
+        self.moyenne = moyenne
+
+    def __repr__(self):
+        return "<Etudiant {} (âge={}, moyenne={})>".format(
+                self.prenom, self.age, self.moyenne)
+
+etudiants = [
+    """
+        Nom, âge, moyenne
+    """
+    Etudiant("Clément", 14, 16),
+    Etudiant("Charles", 12, 15),
+    Etudiant("Orianne", 14, 18),
+    Etudiant("Thomas", 11, 12),
+    Etudiant("Damien", 12, 15),
+]
+
+>>> from operator import attrgetter
+>>> sorted(etudiants, key=attrgetter("moyenne"))
+
+# Trier selon plusieurs critères
+
+>>> sorted(etudiants, key=attrgetter("age", "moyenne"))
+> """
+    <Etudiant Thomas (âge=11, moyenne=12)>,
+    <Etudiant Charles (âge=12, moyenne=15)>,
+    <Etudiant Damien (âge=12, moyenne=15)>,
+    <Etudiant Clément (âge=14, moyenne=16)>,
+    <Etudiant Orianne (âge=14, moyenne=18)>,
+"""
+
+# Chaînage de tris
+
+class LigneInventaire:
+    """
+        Classe représentant une ligne d'un inventaire de vente.
+
+        Attributs attendus par le constructeur:
+            produit -- le nom du produit
+            prix -- le prix unitaire du produit
+            quantite -- la quantité vendue du produit
+    """
+
+    def __init__(self, produit, prix, quantite):
+        self.produit = produit
+        self.prix = prix
+        self.quantite = quantite
+
+    def __repr__(self):
+        return "<Ligne d'inventaire {} ({}x{})>".format(
+                self.produit, self.prix, self.quantite)
+
+inventaire = [
+    LigneInventaire("pomme rouge", 1.2, 19),
+    LigneInventaire("orange", 1.4, 24),
+    LigneInventaire("banane", 0.9, 21),
+    LigneInventaire("poire", 1.2, 24),
+]
+
+>>> from operator import attrgetter
+>>> sorted(inventaire, key=attrgetter("prix", "quantite"))
+
+> """
+    <Ligne d'inventaire banane (0.9x21)>,
+    <Ligne d'inventaire pomme rouge (1.2x19)>,
+    <Ligne d'inventaire poire (1.2x24)>,
+    <Ligne d'inventaire orange (1.4x24)>
+"""
+
+# Trier par prix croissant et quantité décroissante
+
+>>> inventaire.sort(key=attrgetter("quantite"), reverse=True)
+# Possibilité d'utiliser la méthoder sorted
+>>> sorted(inventaire, key=attrgetter("prix"))
+
+> """
+    <Ligne d'inventaire banane (0.9x21)>,
+    <Ligne d'inventaire poire (1.2x24)>,
+    <Ligne d'inventaire pomme rouge (1.2x19)>,
+    <Ligne d'inventaire orange (1.4x24)>
+"""
+
+# GERER L'HERITAGE
+
+# Héritage simple
+
+class A:
+    """
+        Classe A, pour illustrer notre exemple d'héritage
+    """
+    pass # On laisse la définition vide, ce n'est qu'un exemple
+
+class B(A):
+    """
+        Classe B, qui hérite de A.
+        Elle reprend les mêmes méthodes et attributs (dans cet exemple, la classe
+        A ne possède de toute façon ni méthode ni attribut)
+    """
+
+    pass
+
+###
+
+class Personne:
+    """
+        Classe représentant une personne
+    """
+
+    def __init__(self, nom):
+        """
+            Constructeur de notre classe
+        """
+        self.nom = nom
+        self.prenom = "Axel"
+
+    def __str__(self):
+        """
+            Méthode appelée lors d'une conversion de l'objet en chaîne
+        """
+        return "{0} {1}".format(self.prenom, self.nom)
+
+class AgentSpecial(Personne):
+    """
+        Classe définissant un agent spécial.
+        Elle hérite de la classe Personne
+    """
+
+    def __init__(self, nom, matricule):
+        """
+            Un agent se définit par son nom et son matricule
+        """
+        self.nom = nom
+        self.matricule = matricule
+    def __str__(self):
+        """
+            Méthode appelée lors de la conversion de l'objet en chaîne
+        """
+        return "Agent {0}, matricule {1}".format(self.nom, self.matricule)
+
+>>> agent = AgentSpecial("Fisher", "18327-121")
+>>> agent.nom
+> 'Fisher'
+>>> print(agent)
+> 'Agent Fisher, matricule 18327-121'
+>>> agent.prenom
+> """
+    Traceback (most recent call last):
+        File "<stding>", line 1, in <module>
+    AttributeError: 'AgentSpecial' object has no attribute 'prenom'
+  """
+
+ ###
+
+ class Personne:
+     """
+         Classe représentant une personne
+     """
+
+     def __init__(self, nom):
+         """
+             Constructeur de notre classe
+         """
+         self.nom = nom
+         self.prenom = "Axel"
+
+     def __str__(self):
+         """
+             Méthode appelée lors d'une conversion de l'objet en chaîne
+         """
+         return "{0} {1}".format(self.prenom, self.nom)
+
+ class AgentSpecial(Personne):
+     """
+         Classe définissant un agent spécial.
+         Elle hérite de la classe Personne
+     """
+
+     def __init__(self, nom, matricule):
+         """
+             Un agent se définit par son nom et son matricule
+         """
+         # Appel explicite du constructeur de Personne
+         Personne.__init__(self, nom)
+         self.matricule = matricule
+     def __str__(self):
+         """
+             Méthode appelée lors de la conversion de l'objet en chaîne
+         """
+         return "Agent {0}, matricule {1}".format(self.nom, self.matricule)
+
+ >>> agent = AgentSpecial("Fisher", "18327-121")
+ >>> agent.nom
+ > 'Fisher'
+ >>> print(agent)
+ > 'Agent Fisher, matricule 18327-121'
+ >>> agent.prenom
+ > 'Axel'
+
+# Fonction issubclass
+
+    """
+        Fonction qui vérifie si une classe est une sous_classe d'une autre
+        classe.
+        Renvoie True si c'est le cas
+    """
+
+>>> issubclass(AgentSpecial, Personne) # AgentSpecial hérite de Personne
+> True
+>>> issubclass(AgentSpecial, object)
+> True
+
+# Fonction isinstance
+
+    """
+        Permet de savoir si un objet est issu d'une classe ou de ses classes
+        enfants
+    """
+
+>>> agent = AgentSpecial("Fisher", "18327-121")
+>>> isinstance(agent, AgentSpecial) # Agent est une instance d'AgentSpecial
+> True
+>>> isinstance(agent, Personne)
+> True
+
+# Héritage multiple
+
+# Syntaxe
+class MaClasseHeritee(MaClasseMere1, MaClasseMere2, ...):
+
+# Exceptions
+
+class MonException(Exception):
+    """
+        Exception levée dans un certain contexte... qui reste à définir
+    """
+
+    def __init__(self, message):
+        """
+            On se contente de stocker le message d'erreur
+        """
+        self.message = message
+
+    def __str__(self):
+        """
+            On renvoie le message
+        """
+        return self.message
+
+>>> raise MonException("OOPS... J'ai tout cassé!")
+> """
+    Traceback (most recent call last):
+        File "<stdin>", line1, in <module>
+    __main__.MonException: OOPS... J'ai tout cassé!
+  """
+
+###
+
+class ErreurAnalyseFichier(Exception):
+    """
+        Cette exception est levée quand un fichier (de configuration)
+        n'a pas pu être analysé
+
+        Attributs:
+            fichier -- le nom du fichier posant problème
+            ligne -- le numéro de la ligne posant problème
+            message -- le problème proprement dit
+    """
+
+    def __init__(self, fichier, ligne, message):
+        """
+            Constructeur de notre exception
+        """
+        self.fichier = fichier
+        self.ligne = ligne
+        self.message = message
+
+    def __str__(self):
+        """
+            Affichage de l'exception
+        """
+        return "[{}:{}]: {}".format(self.fichier, self.ligne, self.message)
+
+>>> raise ErreurAnalyseFichier("plop.conf", 34,
+                                "Il manque une parenthèse à la fin de l'expression.")
+> """
+    Tracebakc (most recent call last):
+        File "<stdin>", line 2, in <module>
+    __main__.ErreurAnalyseFichier: [plop.conf:34]: il manque une parenthèse à
+    la fin de l'expression.
+  """
+
+# Boucle For
+
+"""
+    Fonctionnement d'une boucle for:
+"""
+
+>>> ma_chaine = "test"
+>>> iterateur_de_ma_chaine = iter(ma_chaine)
+>>> iterateur_de_ma_chaine
+> '<str_iterator object at 0x00B408F0>'
+>>> next(iterateur_de_ma_chaine)
+> 't'
+>>> next(iterateur_de_ma_chaine)
+> 'e'
+>>> next(iterateur_de_ma_chaine)
+> 's'
+>>> next(iterateur_de_ma_chaine)
+> 't'
+>>> next(iterateur_de_ma_chaine)
+> """
+    Traceback (most recent call last):
+        File "<stdin>", line 1, in <module>
+    StopIteration
+  """
