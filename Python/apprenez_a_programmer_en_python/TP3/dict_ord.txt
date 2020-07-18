@@ -1,0 +1,107 @@
+##########################################
+#             CONSIGNES TP3              #
+##########################################
+
+
+## Mission ##
+
+  Création d'une classe destinée à produire des objets conteneurs, ds dictionnaires ordonnés
+  Stocker les données dans deux listes:
+    - 1ère liste contenant les clefs
+    - 2nde liste contenant les valeurs correspondantes
+
+## Spécification ##
+
+  1. Possibilité de créer le dictionnaire de plusieurs façon:
+    - Vide :
+        Appel du constructeur sans passer de paramètre pour créer un dictionnaire vide
+    - Copié depuis un dictionnaire :
+        Passage en paramètre du constructeur un dictionnaire que l'on copie par la suite dans l'objet
+        constructeur(dictionnaire), les clefs et les valeurs contenues dans le dictionnaire sont copiées dans l'objet construit
+    - Pré-rempli grâce à des clefs et valeurs passées en paramètre:
+        Possibilité de pré-remplir l'objet avec des couples clefs-valeurs passés en paramètre
+        constructeur(clef1 = valeur1, clef2 = valeur2, ...)
+
+  2. Les clefs et les valeurs doivent être couplées.
+      Si on chercher à supprimer une clef, la valeur correspondante doit également être supprimée.
+      Les clefs et valeurs se trouvant dans des listes de même taille, prendre l'indice dans une liste pour savoir quel objet lui correspond dans l'autre.
+      Ex: clef d'indice 0 est couplée avec la valeur d'indice 0
+
+  3. Possibilité d’interagir avec l'objet conteneur grâce aux crochets:
+      Pour récupérer une valeur: objet[clef]
+      Pour modifier une valeur: objet[clef] = valeur
+      Pour supprimer une valeur: del objet[clef]
+
+  4. Lorsque l'on cherche à modifier une valeur, si la clef existe on écrase l'ancienne valeur.
+      Si elle n'existe pas on ajoute le couple clef-valeur à la fin du dictionnaire
+
+  5. Possibilité de savoir grâce au mot-clef in si une clef se trouve dans notre dictionnaire
+      if clef in dictionnaire:
+
+  6. Possibilité de pouvoir demander la taille du dictionnaire avec len
+
+  7. Possibilité d'afficher notre dictionnaire directement dans l'interpréteur ou grâce à la fonction print.
+      Affichage similaire à celui des dictionnaires usuels
+      {clef1: valeur1, clef2: valeur2, ...}
+
+  8. L'objet doit définir les méthodes sort pour le trier et reverse pour l'inverser.
+      Le tri de l'objet doit se faire en fonction des clefs.
+
+  9. L'objet doit pouvoir être parcouru.
+      Possibilité de parcourir la liste des clefs contenues dans le dictionnaire lorsque l'on écrit
+        for clef in dictionnaire:
+
+  10. Comme les dictionnaires, trois méthodes doivent être mises en œuvre.
+      - keys() : renvoyant la liste des clefs
+      - values() : renvoyant la liste des valeurs
+      - items(): renvoyant les couples (clef, valeur)
+      Type de retour des méthodes libre. Itérateur ou générateur tant que c'est parcourable.
+
+  11. Possibilité d'ajouter deux dictionnaires ordonnés (dict1 + dict2).
+      Les clefs et les valeurs du second dictionnaire sont ajoutées au premier.
+
+## Exemple de manipulation ## 
+
+>>> fruits = DictionnaireOrdonne()
+>>> fruits
+> {}
+>>> fruits["pomme"] = 52
+>>> fruits["poire"] = 34
+>>> fruits["prune"] = 128
+>>> fruits
+> {'pomme': 52, 'poire': 34, 'prune': 128}
+>>> fruits.sort()
+>>> print(fruits)
+> {'poire': 34, 'pomme': 52, 'prune': 128}
+
+>>> legumes = DictionnaireOrdonne(carotte = 26, haricot = 48)
+> print(legumes)
+> {'carotte': 26, 'haricot' = 48}
+>>> len(legumes)
+> 2
+>>> legume.reverse()
+>>> fruits = fruits + legumes
+>>> fruits
+> {'poire': 34, 'pomme': 52, 'prune': 128, 'haricot': 48, 'carotte': 26}
+
+>>> del fruits['haricot']
+>>> 'haricot' in fruits
+> False
+>>> legume['haricot']
+> 48
+
+>>> for clef in legumes:
+...   print(clef)
+> haricot
+> carotte
+
+>>> legumes.keys()
+> ['haricot', 'carotte']
+>>> legumes.values()
+> [48, 26]
+
+>>> for nom, qtt in legumes.items():
+...   print("{0} ({1})".format(nom, qtt))
+
+> haricot (48)
+> carotte (26)
